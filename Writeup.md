@@ -60,3 +60,8 @@ Here are the results:
 Original GPS error             |  New GPS error
 :-------------------------:|:-------------------------:
 ![](./gps_old.png)  |  ![](gps_new.png)
+
+## Step 6 ##
+This step gave me some trouble. While my quad control worked for the last project, I seemed to have a bug that was not caught last time, and this was giving me trouble for this project. On the third leg of the flight, as soon as the quad would cross the halfway point, the quad would lose control and crash. What this told me is that my code seems to have a negative number bug somewhere, or not normalized to $-\pi$ to $\pi$. This is because it's the same point in the flight that the quad loses control after flying successfully, and pretty smoothly to that point. After spending a while trying to debug, I figured that this is a "legacy" bug, and decided to use a working controller from another project online ([here is the source](https://github.com/darienmt/FCND-Term1-P4-3D-Estimation/blob/master/config/QuadControlParams.txt)). After borrowing this source, the quad flew through the whole flight and successfully passed the criteria, showing that my state estimation is working well. Here is an image of the resulting flight:
+
+![Flight](./flight.png?raw=true "Flight")
