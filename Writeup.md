@@ -45,3 +45,18 @@ To update the yaw state from the magnetometer, first we set the yaw in `zFromX`,
 Original Yaw error             |  New Yaw error
 :-------------------------:|:-------------------------:
 ![](./yaw_error_old.png)  |  ![](yaw_error_new.png)
+
+## Step 5 ##
+To update the GPS state from the GPS, first I update the measurement model, $h$, as seen below:
+
+![GPS h](./gps_h.png?raw=true "GPS h")
+
+Then I set $h'$ to the derivative of $h$, as seen below:
+
+![GPS h Prime](./gps_h_prime.png?raw=true "GPS h Prime")
+
+Here are the results:
+
+Original GPS error             |  New GPS error
+:-------------------------:|:-------------------------:
+![](./gps_old.png)  |  ![](gps_new.png)
