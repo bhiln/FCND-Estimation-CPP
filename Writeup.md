@@ -19,11 +19,15 @@ Small-angle approximation integration             |  Non-linear complimentary fi
 ![](./small-angle_approximation_integration.png)  |  ![](non-linear_complimentary_filter.png)
 
 ## Step 3 ##
-To predict the new EKF covariance and state, first I create the R'<sub>bg</sub> matrix, which is the partial derivative of the rotation matrix R<sub>bg</sub>, following the following documentation:
+To predict the new EKF covariance and state, first I calculate the new state. To do this, I use a simplistic integration method, where I add the derivative of the value * DeltaT to the original value:
+
+$x_t = x_{t-1} + \dot xdt$
+
+Then, I create the R'<sub>bg</sub> matrix, which is the partial derivative of the rotation matrix R<sub>bg</sub>, following the following documentation:
 
 ![R Prime](./r_prime.png?raw=true "R Prime")
 
-Next is the predict step, in which I create the jacobian g' matrix and then calculate the covariance matrix, both using the documentation below:
+Next is the covariance calculation step, in which I create the jacobian g' matrix and then calculate the covariance matrix, both using the documentation below:
 
 ![g Prime](./g_prime.png?raw=true "g Prime")
 
