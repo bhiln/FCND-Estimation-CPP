@@ -9,6 +9,11 @@ $ imu_x = np.loadtxt(fname, delimiter=",")
 $ np.std(imu_x[:,1])
 0.51095120101124747
 ```
-![Alt text](./std.jpg?raw=true "Title")
+![Standard Deviation](./std.png?raw=true "Standard Deviation")
 
 ##Step 2
+To best predict attitude (roll, pitch, yaw), I implemented a non-linear complimentary filter. This involved using quaternions to convert angular rates from IMU to body frame, multiply by the euler angles quaternion, then convert back to IMU frame. Using quaternions made this process very easy to implement. Finally, I normalized yaw to -pi to pi.
+
+Small-angle approximation integration             |  Non-linear complimentary filter
+:-------------------------:|:-------------------------:
+![](./small-angle_approximation_integration.png)  |  ![](non-linear_complimentary_filter.png)
