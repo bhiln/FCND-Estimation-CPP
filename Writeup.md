@@ -12,7 +12,7 @@ $ np.std(imu_x[:,1])
 ![Standard Deviation](./std.png?raw=true "Standard Deviation")
 
 ## Step 2 ##
-To best predict attitude (roll, pitch, yaw), I implemented a non-linear complimentary filter. This involved using quaternions to convert angular rates from IMU to body frame, multiply by the euler angles quaternion, then convert back to IMU frame. Using quaternions made this process very easy to implement. Finally, I normalized yaw to -pi to pi.
+To best predict attitude (roll, pitch, yaw), I implemented a non-linear complimentary filter. This involved using quaternions to convert angular rates from IMU to body frame, multiply by the euler angles quaternion, then convert back to IMU frame. Using quaternions made this process very easy to implement. Finally, I normalized yaw to $-\pi$ to $\pi$.
 
 Small-angle approximation integration             |  Non-linear complimentary filter
 :-------------------------:|:-------------------------:
@@ -23,11 +23,11 @@ To predict the new EKF covariance and state, first I calculate the new state. To
 
 $x_t = x_{t-1} + \dot xdt$
 
-Then, I create the R'<sub>bg</sub> matrix, which is the partial derivative of the rotation matrix R<sub>bg</sub>, following the following documentation:
+Then, I create the $R'_{bg}$ matrix, which is the partial derivative of the rotation matrix $R_{bg}$, following the following documentation:
 
 ![R Prime](./r_prime.png?raw=true "R Prime")
 
-Next is the covariance calculation step, in which I create the jacobian g' matrix and then calculate the covariance matrix, both using the documentation below:
+Next is the covariance calculation step, in which I create the jacobian $g'$ matrix and then calculate the covariance matrix, both using the documentation below:
 
 ![g Prime](./g_prime.png?raw=true "g Prime")
 
@@ -38,3 +38,10 @@ Here are the results of the predict step:
 Original QPosXYStd, QVelXYStd             |  New QPosXYStd, QVelXYStd
 :-------------------------:|:-------------------------:
 ![](./QPosXYStd_old.png)  |  ![](QPosXYStd_new.png)
+
+## Step 4 ##
+To update the yaw state from the magnetometer, first we set the yaw in `zFromX`, then normalize it to be between $-\pi$ and $\pi$. Finally, I set $h'$ = [0 0 0 0 0 0 0 1], the derivative of $h$.
+
+Original Yaw error             |  New Yaw error
+:-------------------------:|:-------------------------:
+![](./yaw_error_old.png)  |  ![](yaw_error_new.png)
