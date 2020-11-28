@@ -169,8 +169,23 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   Quaternion<float> attitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, curState(6));
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
-
+  float x = curState(0);
+  float y = curState(1);
+  float z = curState(2);
+  float x_dot = curState(3);
+  float y_dot = curState(4);
+  float z_dot = curState(5);
+  float x_dot_dot = attitude.Rotate_BtoI(accel).x;
+  float y_dot_dot = attitude.Rotate_BtoI(accel).y;
+  float z_dot_dot = attitude.Rotate_BtoI(accel).z;
+  float yaw = curState(6);
+  predictedState(0) = x + x_dot * dt;
+  predictedState(1) = y + y_dot * dt;
+  predictedState(2) = z + z_dot * dt;
+  predictedState(3) = x_dot + x_dot_dot * dt;
+  predictedState(4) = y_dot + y_dot_dot * dt;
+  predictedState(5) = z_dot + (-9.81f + z_dot_dot) * dt;
+  predictedState(6) = yaw;
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   return predictedState;
@@ -196,8 +211,18 @@ MatrixXf QuadEstimatorEKF::GetRbgPrime(float roll, float pitch, float yaw)
   //   that your calculations are reasonable
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
-
+  float phi = roll;
+  float theta = pitch;
+  float psi = yaw;
+  RbgPrime(0,0) = -cos(theta) * sin(psi);
+  RbgPrime(0,1) = -sin(phi) * sin(theta) * sin(psi) - cos(phi) * cos(psi);
+  RbgPrime(0,2) = -cos(phi) * sin(theta) * sin(psi) + sin(phi) * cos(psi);
+  RbgPrime(1,0) = cos(theta) * cos(psi);
+  RbgPrime(1,1) = sin(phi) * sin(theta) * cos(psi) - cos(phi) * sin(psi);
+  RbgPrime(1,2) = cos(phi) * sin(theta) * cos(psi) + sin(phi) * sin(psi);
+  RbgPrime(2,0) = 0;
+  RbgPrime(2,1) = 0;
+  RbgPrime(2,2) = 0;
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   return RbgPrime;
@@ -242,8 +267,14 @@ void QuadEstimatorEKF::Predict(float dt, V3F accel, V3F gyro)
   gPrime.setIdentity();
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+  gPrime(0,3) = dt;
+  gPrime(1,4) = dt;
+  gPrime(2,5) = dt;
+  gPrime(3,6) = ((RbgPrime(0,0) * accel.x) + (RbgPrime(0,1) * accel.y) + (RbgPrime(0,2) * accel.z)) * dt;
+  gPrime(4,6) = ((RbgPrime(1,0) * accel.x) + (RbgPrime(1,1) * accel.y) + (RbgPrime(1,2) * accel.z)) * dt;
+  gPrime(5,6) = ((RbgPrime(2,0) * accel.x) + (RbgPrime(2,1) * accel.y) + (RbgPrime(2,2) * accel.z)) * dt;
 
-
+  ekfCov = gPrime * ekfCov * gPrime.transpose() + Q;
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   ekfState = newState;
