@@ -1,4 +1,3 @@
-# source: https://github.com/darienmt/FCND-Term1-P4-3D-Estimation/blob/master/config/QuadControlParams.txt
 ############################## SLR SIMPLECONFIG ############################
 # this is a comment. [X] is a namespace. [X:Y] initializes X from Y
 # Namespace and parameter names are not case-sensitive
@@ -11,7 +10,6 @@ UseIdealEstimator=1
 
 # Physical properties
 Mass = 0.5
-# [.478 .492 @ 0.09]
 L = 0.17
 Ixx = 0.0023
 Iyy = 0.0023
@@ -21,36 +19,20 @@ minMotorThrust = .1
 maxMotorThrust = 4.5
 
 # Position control gains
-kpPosXY = 30
-kpPosZ = 20
-KiPosZ = 40
+kpPosXY = 3
+kpPosZ = 4
+KiPosZ = 30
 
 # Velocity control gains
-kpVelXY = 12.0
-kpVelZ = 9.0
+kpVelXY = 9
+kpVelZ = 12
 
-# Angle control gains
-kpBank = 10
-kpYaw = 2
+# Angle control gains: rollpitch, yaw control
+kpBank = 14
+kpYaw = 4
 
-# Angle rate gains
-kpPQR = 95, 95, 6
-
-# Position control gains
-# kpPosXY = 30
-# kpPosZ = 20
-# KiPosZ = 40
-
-# Velocity control gains
-# kpVelXY = 12.0
-# kpVelZ = 9.0
-
-# Angle control gains
-# kpBank = 10
-# kpYaw = 2
-
-# Angle rate gains
-# kpPQR = 95, 95, 6
+# Angle rate gains: bodyrate control, yaw control
+kpPQR = 50, 50, 10
 
 # limits
 maxAscentRate = 5
