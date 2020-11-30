@@ -333,11 +333,10 @@ void QuadEstimatorEKF::UpdateFromMag(float magYaw)
   //  - The magnetomer measurement covariance is available in member variable R_Mag
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
   zFromX(0) = ekfState(6);
-  float diff = z(0) - zFromX(0);
-  if (diff > F_PI) {zFromX(0) += 2.f*F_PI;}
-  else if (diff < -F_PI) {zFromX(0) -= 2.f*F_PI;}
-  
   hPrime(0, 6) = 1;
+  float diff = z(0) - zFromX(0);
+  if (diff > F_PI) {z(0) -= 2.f*F_PI;}
+  else if (diff < -F_PI) {z(0) += 2.f*F_PI;}
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   Update(z, hPrime, R_Mag, zFromX);
